@@ -5,9 +5,8 @@ function Items() {
   const [form, setForm] = useState({ name: "", description: "", url: "" });
   const [editId, setEditId] = useState(null);
 
-  // Fetch all items
   const fetchItems = async () => {
-    const res = await fetch("http://localhost:5000/items");
+    const res = await fetch("https://qr-code-api-server.vercel.app/items");
     const data = await res.json();
     setItems(data);
   };
@@ -16,58 +15,50 @@ function Items() {
     fetchItems();
   }, []);
 
-  // Handle input change
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  // Create or Update item
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (editId) {
-      // Update item
-      await fetch(`http://localhost:5000/items/${editId}`, {
+      await fetch(`https://qr-code-api-server.vercel.app/items/${editId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
     } else {
-      // Create item
-      await fetch("http://localhost:5000/items", {
+      await fetch("https://qr-code-api-server.vercel.app/items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
     }
-
     setForm({ name: "", description: "", url: "" });
     setEditId(null);
     fetchItems();
   };
 
-  // Delete item
   const handleDelete = async (id) => {
-    await fetch(`http://localhost:5000/items/${id}`, { method: "DELETE" });
+    await fetch(`https://qr-code-api-server.vercel.app/items/${id}`, { method: "DELETE" });
     fetchItems();
   };
 
-  // Edit item
   const handleEdit = (item) => {
     setForm({ name: item.name, description: item.description, url: item.url || "" });
     setEditId(item._id);
   };
 
   return (
-    <div className="max-w-lg mx-auto p-4 mt-8 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-        Items CRUD
+    <div className="max-w-6xl mx-auto p-6 mt-10">
+      <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-8">
+        Items Manager
       </h2>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="mb-6">
-        {/* Name Input */}
-        <div className="mb-4">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white shadow-md rounded-xl p-6 mb-8 border border-gray-100"
+      >
+        <div className="grid gap-4 md:grid-cols-2">
           <input
             type="text"
             name="name"
@@ -75,12 +66,8 @@ function Items() {
             value={form.name}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </div>
-
-        {/* URL Input */}
-        <div className="mb-4">
           <input
             type="url"
             name="url"
@@ -88,70 +75,63 @@ function Items() {
             value={form.url}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
-        {/* Description Textarea */}
-        <div className="mb-4">
-          <textarea
-            name="description"
-            placeholder="Description"
-            value={form.description}
-            onChange={handleChange}
-            rows="4"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
+        <textarea
+          name="description"
+          placeholder="Description"
+          value={form.description}
+          onChange={handleChange}
+          rows="4"
+          className="w-full mt-4 px-4 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
         >
           {editId ? "Update Item" : "Add Item"}
         </button>
       </form>
 
       {/* Item List */}
-      <ul className="space-y-3">
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
-          <li
+          <div
             key={item._id}
-            className="flex items-start justify-between p-3 bg-gray-50 border rounded-md shadow-sm"
+            className="flex flex-col justify-between p-5 bg-white border rounded-xl shadow-sm hover:shadow-lg transition-shadow"
           >
-            <div className="flex-1">
-              <strong className="text-gray-900 text-lg">{item.name}</strong>
+            <div className="mb-4">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">{item.name}</h3>
+              <p className="text-gray-600 mb-3">{item.description}</p>
               {item.url && (
-                <p>
-                  <a
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline break-words"
-                  >
-                    {item.url}
-                  </a>
-                </p>
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-blue-100 text-blue-700 py-2 px-4 rounded-lg hover:bg-blue-200 transition-colors"
+                >
+                  Visit Link
+                </a>
               )}
-              <p className="text-gray-600 mt-1">{item.description}</p>
             </div>
-            <div className="flex space-x-2 ml-3">
+            <div className="flex justify-end space-x-3 mt-auto">
               <button
                 onClick={() => handleEdit(item)}
-                className="bg-yellow-500 text-white py-1 px-3 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50"
+                className="bg-yellow-500 text-white py-1 px-4 rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors"
               >
                 Edit
               </button>
               <button
                 onClick={() => handleDelete(item._id)}
-                className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                className="bg-red-500 text-white py-1 px-4 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors"
               >
                 Delete
               </button>
             </div>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

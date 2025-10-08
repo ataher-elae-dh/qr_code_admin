@@ -5,7 +5,7 @@ const Story = () => {
 
   // Fetch all items
   const fetchItem = async () => {
-    const res = await fetch("http://localhost:5000/Story");
+    const res = await fetch("https://qr-code-api-server.vercel.app/Story");
     const data = await res.json();
     setItem(data);
     console.log(data);
