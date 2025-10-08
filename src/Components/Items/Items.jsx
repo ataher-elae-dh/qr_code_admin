@@ -7,7 +7,7 @@ function Items() {
 
   // Fetch all items
   const fetchItems = async () => {
-    const res = await fetch("https://qr-code-server-five.vercel.app/api/items");
+    const res = await fetch("http://localhost:5000/items");
     const data = await res.json();
     setItems(data);
   };
@@ -27,14 +27,14 @@ function Items() {
 
     if (editId) {
       // Update item
-      await fetch(`https://qr-code-server-five.vercel.app/api/items/${editId}`, {
+      await fetch(`http://localhost:5000/items/${editId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
     } else {
       // Create item
-      await fetch("https://qr-code-server-five.vercel.app/api/items", {
+      await fetch("http://localhost:5000/items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -48,7 +48,7 @@ function Items() {
 
   // Delete item
   const handleDelete = async (id) => {
-    await fetch(`https://qr-code-server-five.vercel.app/api/items/${id}`, { method: "DELETE" });
+    await fetch(`http://localhost:5000/items/${id}`, { method: "DELETE" });
     fetchItems();
   };
 

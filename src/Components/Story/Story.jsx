@@ -1,53 +1,50 @@
 import React, { useEffect, useState } from 'react';
 
 const Story = () => {
-  const [items, setItems] = useState([]);
-  const [randomItem, setRandomItem] = useState(null);
+  const [item, setItem] = useState(null);
 
   // Fetch all items
-  const fetchItems = async () => {
-    const res = await fetch("http://localhost:5000/api/items");
+  const fetchItem = async () => {
+    const res = await fetch("http://localhost:5000/Story");
     const data = await res.json();
-    setItems(data);
-
-    if (data.length > 0) {
-      const randomIndex = Math.round(Math.random() * (items.length - 1));
-      setRandomItem(data[randomIndex]);
-    }
+    setItem(data);
+    console.log(data);
+    
   };
 
-  useEffect(() => {
-    fetchItems();
+ useEffect(() => {
+    fetchItem();
   }, []);
 
-  console.log(randomItem);
+  console.log(item);
 
   return (
     <div>
       <h2 className="text-center text-2xl font-bold mt-6">Story</h2>
 
       <div className="max-w-lg mx-auto p-4 mt-8 bg-white shadow-lg rounded-lg">
-        {randomItem ? (
+        {item ? (
           <div className="p-3 bg-gray-50 border rounded-md shadow-sm text-center">
-            <strong className="text-gray-900 text-lg">{randomItem.name}</strong>
+            <strong className="text-gray-900 text-lg">{item.name}</strong>
 
-            {randomItem.url && (
+            {item.url && (
               <p>
                 <a
-                  href={randomItem.url}
+                  href={item.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline break-words"
                 >
-                  {randomItem.url}
+                  {item.url}
                 </a>
               </p>
             )}
 
-            <p className="text-gray-600 mt-1">{randomItem.description}</p>
+            <p className="text-gray-600 mt-1">{item.description}</p>
           </div>
         ) : (
           <p className="text-center text-gray-500">Loading...</p>
+          
         )}
       </div>
     </div>
