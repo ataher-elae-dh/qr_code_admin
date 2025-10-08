@@ -26,7 +26,7 @@ const Nav = () => {
     </div> */}
     <Link to="/" className="btn btn-ghost text-xl ">
   
-      <img className='w-55 h-full p-1 ' src="/public/elogo.png" alt="" /> 
+      <img className='w-55 h-full p-1 ' src="https://e-laeltd.com/assets/img/elogo.png" alt="" /> 
       <p className='hidden sm:inline '> | <span className='font-2xl'>Rangpur </span> Division</p>
       
     </Link>
