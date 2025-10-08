@@ -50,7 +50,7 @@ function Items() {
   return (
     <div className="max-w-6xl mx-auto p-6 mt-10">
       <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-8">
-        Items Manager
+        URL Manager
       </h2>
 
       {/* Form */}
