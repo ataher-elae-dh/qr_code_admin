@@ -1,33 +1,36 @@
 import React, { useEffect, useState } from 'react';
 
 const Story = () => {
-  const [item, setItem] = useState([]);
+const [items, setItems] = useState([]);
 
-  // Fetch all items
-  const fetchItem = async () => {
-    const res = await fetch("https://qr-code-api-server.vercel.app/Story");
-    const data = await res.json();
-    setItem(data);
-    // console.log(data);
-    
-  };
+    // fech story data from backend and display here
+    async function fetchStory() {
+        const res = await fetch("https://qr-code-api-server.vercel.app/story");
+        const data = await res.json();
+        // console.log(data);
+        setItems(data);
+        // setStory(data);
+        
 
- useEffect(() => {
-    fetchItem();
-    
-  }, []);
-  let url = item.url;
-  console.log(url);
-  
+    }
 
-  
+    console.log(items);
+    location.href = items.url
+
+    // let story = ()=>{
+    //   location.href = items.url
+    // }
+
+    // call fetchStory function
+    useEffect(() => {
+        fetchStory();
+        // story();
+    }, []);
 
   return (
     <div>
-      <h2 className="text-center">Story</h2>
-      {/* <h2 className="text-center">{item.url}</h2> */}
-      {window.location.replace(url)}
-      </div>
+      
+    </div>
   );
 };
 
